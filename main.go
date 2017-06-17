@@ -2,7 +2,9 @@ package main
 
 import ( 
 		//"html/template"
-		"net/http")
+		"fmt"
+		"net/http"
+		"io/ioutil")
 
 //Entry Point
 func main() {
@@ -31,6 +33,13 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //Method responsible for the main page
 func (app *App) index(w http.ResponseWriter, r *http.Request){
+	var base_file, ok = ioutil.ReadFile("Templates/base.html")
+	if ok != nil {
+		fmt.Println(ok)
+		w.Write([]byte("Sorry Bud"))
+	} else {
+		w.Write(base_file)
+	}
 	var bit = []byte("fuck off")
 	w.Write(bit)
 }
