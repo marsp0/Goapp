@@ -1,10 +1,12 @@
 package main
 
 import ( 
-		//"html/template"
+		"html/template"
 		"fmt"
 		"net/http"
-		"io/ioutil")
+		//"io/ioutil"
+		//"os"
+		)
 
 //Entry Point
 func main() {
@@ -33,15 +35,15 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //Method responsible for the main page
 func (app *App) index(w http.ResponseWriter, r *http.Request){
-	var base_file, ok = ioutil.ReadFile("Templates/base.html")
-	if ok != nil {
-		fmt.Println(ok)
-		w.Write([]byte("Sorry Bud"))
+	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("Templates/base.html")
+	//var temp, _ = ioutil.ReadFile("Templates/base.html")
+	fmt.Println(IndexTemplate)
+	if err != nil {
+		w.Write([]byte("fsadsad"))
 	} else {
-		w.Write(base_file)
+		fmt.Println("dsa")
+		IndexTemplate.Execute(w,nil)
 	}
-	var bit = []byte("fuck off")
-	w.Write(bit)
 }
 
 //Method responsible for the register page
