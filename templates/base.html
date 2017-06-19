@@ -1,0 +1,26 @@
+{{define "IndexTemplate"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>Shroomed</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+
+  </head>
+  <body id = "body">
+    <div id ="main">
+    	<div id = "form-div">
+    		<form id="form" method = "post" action="/get_summoner">
+    			<input id="input-text" type="text" value="Summoner name" name = "SummonerName"><br>
+    			<select name = "Server" id = "input">
+    				<option value= "NA">North America</option>
+    				<option value= "EUW">Europe West</option>
+    				<option value= "EUNE">Europe Nordic and East</option>
+    			</select>
+    			<input id = "input"type="submit">
+    		</form>
+    	</div>
+    </div>
+  </body>
+</html>
+{{end}}

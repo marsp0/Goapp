@@ -6,6 +6,7 @@ import (
 		"net/http"
 		//"io/ioutil"
 		//"os"
+		"strings"
 		)
 
 //Entry Point
@@ -17,8 +18,9 @@ func main() {
 func New() http.Handler {
 	var router = http.NewServeMux()
 	var app = App{router}
-	router.HandleFunc("/", app.index)
-	router.HandleFunc("/register", app.CreateAccount)
+	router.HandleFunc("/", app.Index)
+	router.HandleFunc("/static/css/", app.Static)
+	router.HandleFunc("/get_summoner", app.GetSummoner)
 	return app
 }
 
@@ -34,20 +36,25 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 //Method responsible for the main page
-func (app *App) index(w http.ResponseWriter, r *http.Request){
-	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("Templates/base.html")
-	//var temp, _ = ioutil.ReadFile("Templates/base.html")
-	fmt.Println(IndexTemplate)
+func (app *App) Index(w http.ResponseWriter, r *http.Request){
+	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("templates/base.html")
+	fmt.Println(r.URL.Path)
 	if err != nil {
-		w.Write([]byte("fsadsad"))
+		w.Write([]byte("Nope"))
 	} else {
-		fmt.Println("dsa")
 		IndexTemplate.Execute(w,nil)
 	}
 }
 
-//Method responsible for the register page
-func (app *App) CreateAccount(w http.ResponseWriter, r *http.Request) {
-	var bit = []byte("you should be able to create an account here. Not implemented")
-	w.Write(bit)
+//the function that serves CSS
+//NOTE > need to refactor and improve it to serve any kind of static files. 
+//NOTE > On golangs page it says that if this can take user input, then I should also make sure that the input is properly configured.
+func (app *App) Static(w http.ResponseWriter, r *http.Request) {
+	var path = strings.Trim(r.URL.Path, "/")
+	http.ServeFile(w,r,path)
+}
+
+func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Println(r.Form)	
 }
