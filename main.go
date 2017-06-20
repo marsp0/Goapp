@@ -7,6 +7,8 @@ import (
 		//"io/ioutil"
 		//"os"
 		"strings"
+		"regexp"
+		"./utils"
 		)
 
 //Entry Point
@@ -57,4 +59,13 @@ func (app *App) Static(w http.ResponseWriter, r *http.Request) {
 func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 	//if we do not parse the form we will get an empty map
 	r.ParseForm()
+	//Verify that the summoner name is a valid name : https://developer.riotgames.com/getting-started.html
+	var ok, _ = regexp.Match("^[0-9\\p{L} _\\.]+$", []byte(r.Form["SummonerName"][0]))
+	fmt.Println(ok)
+	if !ok {
+		w.Write([]byte("suck my ..."))
+	} else {
+		fmt.Println("Ds")
+		utils.GetSummonerByName("dsa","euw")
+	}
 }
