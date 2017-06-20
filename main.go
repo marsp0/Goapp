@@ -55,6 +55,6 @@ func (app *App) Static(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
+	//if we do not parse the form we will get an empty map
 	r.ParseForm()
-	fmt.Println(r.Form)	
 }
