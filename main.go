@@ -65,7 +65,6 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		w.Write([]byte("suck my ..."))
 	} else {
-		fmt.Println("Ds")
-		utils.GetSummonerByName("dsa","euw")
+		utils.GetSummonerByName(r.Form["SummonerName"][0],r.Form["Server"][0])
 	}
 }
