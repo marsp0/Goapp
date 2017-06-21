@@ -67,15 +67,15 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var summoner, err = utils.GetSummonerByName(r.Form["SummonerName"][0],r.Form["Server"][0])
 		if err != nil {
+			fmt.Println(err)
 			w.Write([]byte("we fucked up bruh"))
 		} else {
 			var SummonerTemplate, err = template.New("SummonerTemplate").ParseFiles("templates/summoner.html")
 			if err != nil {
+				fmt.Println(err)
 				w.Write([]byte("Nope"))
 			} else {
-				var temp,err = summoner.GetMatchesByID(summoner.AccountId, r.Form["Server"][0])
-				fmt.Println(err)
-				fmt.Println(temp)
+				fmt.Println(summoner.Matches)
 				SummonerTemplate.Execute(w,summoner)
 			}
 		}
