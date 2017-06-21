@@ -40,7 +40,6 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 //Method responsible for the main page
 func (app *App) Index(w http.ResponseWriter, r *http.Request){
 	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("templates/base.html")
-	fmt.Println(r.URL.Path)
 	if err != nil {
 		w.Write([]byte("Nope"))
 	} else {
@@ -61,7 +60,6 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	//Verify that the summoner name is a valid name : https://developer.riotgames.com/getting-started.html
 	var ok, _ = regexp.Match("^[0-9\\p{L} _\\.]+$", []byte(r.Form["SummonerName"][0]))
-	fmt.Println(ok)
 	if !ok {
 		w.Write([]byte("suck my ..."))
 	} else {
@@ -75,7 +73,6 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				w.Write([]byte("Nope"))
 			} else {
-				fmt.Println(summoner.Matches)
 				SummonerTemplate.Execute(w,summoner)
 			}
 		}

@@ -25,16 +25,17 @@
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th>Victory/Defeat</th>
-						<th>KDA</th>
+						<th>Champion</th>
+						<th>Mode</th>
 						<th>More Info</th>
 					</tr>
 				</thead>
 				<tbody>
 					{{range $index, $value := .Matches}}
 						<tr>
-							<td> {{$value.Timestamp}} </td>
-							<td> dsa </td>
+							<td> {{$value.Date}} </td>
+							<td> {{$value.ChampionName}} </td>
+							<td> {{$value.Mode}}</td>
 						</tr>
 					{{end}}
 				</tbody>
