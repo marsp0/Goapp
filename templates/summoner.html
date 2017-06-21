@@ -1,0 +1,58 @@
+{{define "SummonerTemplate"}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<title>{{.Name}}</title>
+		<link href="/static/css/style.css" rel="stylesheet">
+		<link href="/static/css/bootstrap.css" rel="stylesheet">
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-default">
+			<div class="navbar-header"><a class="navbar-brand" href="/">Shroomed</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> 
+					<span class="glyphicon glyphicon-bar"></span>
+					<span class="glyphicon glyphicon-bar"></span>
+					<span class="glyphicon glyphicon-bar"></span>
+				</button>
+			</div>
+		</div>
+		<div class="container">
+			<h2>{{.Name}}</h2>
+			<p>Level : {{.SummonerLevel}}</p>            
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Victory/Defeat</th>
+						<th>KDA</th>
+						<th>More Info</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>John</td>
+						<td>Doe</td>
+						<td>john@example.com</td>
+						<td>john@example.com</td>
+					</tr>
+					<tr>
+						<td>Mary</td>
+						<td>Moe</td>
+						<td>mary@example.com</td>
+						<td>john@example.com</td>
+					</tr>
+					<tr>
+						<td>July</td>
+						<td>Dooley</td>
+						<td>july@example.com</td>
+						<td>john@example.com</td>
+					</tr>
+				</tbody>
+		  	</table>
+		</div>
+		<!-- /container -->
+	</body>
+</html>
+{{end}}
