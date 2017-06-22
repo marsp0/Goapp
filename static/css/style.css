@@ -1,5 +1,11 @@
 .summoner-info { 
-	border: 1px solid black;
-	border-radius: 10px;
 	padding: 0;
+}
+.main-nav {
+	border-radius: 0;
+	background-color: #00ccff;
+	border: 0;
+}
+.main-nav div a {
+	color: white;
 }

@@ -10,7 +10,7 @@
 		<link href="/static/css/style.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-default">
+		<div class="navbar navbar-inverse navbar-default main-nav">
 			<div class="navbar-header"><a class="navbar-brand" href="/">Shroomed</a>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> 
 					<span class="glyphicon glyphicon-bar"></span>
@@ -21,9 +21,16 @@
 		</div>
 		<div class="container">
 			<div class ="container summoner-info">
-				<img src="http://ddragon.leagueoflegends.com/cdn/7.12.1/img/profileicon/{{.ProfileIconId}}.png" class="img-rounded" alt = "Profile Icon" width="150" height="150">
-				<h2>{{.Name}}</h2>
-				<p>Level : {{.SummonerLevel}}</p>
+				<div class = "row">
+					<div class = "col-sm-2">
+						<img src="http://ddragon.leagueoflegends.com/cdn/7.12.1/img/profileicon/{{.ProfileIconId}}.png" class="img-rounded img-responsive" alt = "Profile Icon" width="150" height="150">
+					</div>
+					<div class ="col-sm-4">
+						<h1>{{.Name}}</h1>
+						<p>Level : {{.SummonerLevel}}</p>
+						<p>Last Seen : {{.LastSeen}}</p>
+					</div>
+				</div>
 			</div>
 			<table class="table table-hover">
 				<thead>

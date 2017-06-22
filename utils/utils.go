@@ -206,7 +206,7 @@ type Match struct {
 	ChampionName string
 	PlatformId string `platformId`
 	Timestamp int `timestamp`
-	Date time.Time
+	Date string
 	Queue int `queue`
 	Mode string
 	Role string `role`
@@ -220,6 +220,7 @@ type SummonerProfile struct {
 	Name string
 	SummonerLevel int
 	RevisionDate int //when was the profile last modified. It is given as epoch milliseconds (w/e that means, need to check it out)
+	LastSeen string
 	Id int //Summoner ID - NOT ACCOUNT ID
 	AccountId int
 	Matches []Match
@@ -252,7 +253,8 @@ func (summoner *SummonerProfile) GetMatchesByID(id int, server string) error{
 	defer Response.Body.Close()
 	summoner.Matches = matches.Matches
 	for i := 0; i < len(summoner.Matches); i++ {
-		summoner.Matches[i].Date = time.Unix(int64(summoner.Matches[i].Timestamp)/1000,0)
+		var year,month,day = time.Unix(int64(summoner.Matches[i].Timestamp)/1000,0).Date()
+		summoner.Matches[i].Date = fmt.Sprintf("%d-%02d-%02d", year,month,day)
 		summoner.Matches[i].Mode = GameModes[summoner.Matches[i].Queue]
 		summoner.Matches[i].ChampionName = Champions[summoner.Matches[i].Champion]
 	}
@@ -287,10 +289,9 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 			}
 		}
 	}
-	for i := 0; i < len(profile.Matches); i++ {
-		
-	}
 	defer Response.Body.Close()
+	var year, month, day = time.Unix(int64(profile.RevisionDate)/1000,0).Date()
+	profile.LastSeen = fmt.Sprintf("%d-%02d-%02d",year,month,day)
 	return &profile, nil
 }
 
