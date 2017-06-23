@@ -41,7 +41,7 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (app *App) Index(w http.ResponseWriter, r *http.Request){
 	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("templates/base.html")
 	if err != nil {
-		w.Write([]byte("Nope"))
+		http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 	} else {
 		IndexTemplate.Execute(w,nil)
 	}
@@ -59,19 +59,19 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 	//if we do not parse the form we will get an empty map
 	r.ParseForm()
 	//Verify that the summoner name is a valid name : https://developer.riotgames.com/getting-started.html
-	var ok, _ = regexp.Match("^[0-9\\p{L} _\\.]+$", []byte(r.Form["SummonerName"][0]))
+	var ok, _ = regexp.Match("^[0-9\\p{L} _]+$", []byte(r.Form["SummonerName"][0]))
 	if !ok {
-		w.Write([]byte("suck my ..."))
+		http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 	} else {
 		var summoner, err = utils.GetSummonerByName(r.Form["SummonerName"][0],r.Form["Server"][0])
 		if err != nil {
 			fmt.Println(err)
-			w.Write([]byte("we fucked up bruh"))
+			http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 		} else {
 			var SummonerTemplate, err = template.New("SummonerTemplate").ParseFiles("templates/summoner.html")
 			if err != nil {
 				fmt.Println(err)
-				w.Write([]byte("Nope"))
+				http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 			} else {
 				SummonerTemplate.Execute(w,summoner)
 			}
