@@ -226,7 +226,7 @@ type SummonerProfile struct {
 	Matches []Match
 }
 
-func (summoner *SummonerProfile) GetMatchesByID(id int, server string) error{
+func (summoner *SummonerProfile) GetMatchesByID(id int, server string) error {
 	// Call the end point to get the matches
 	var Response, ResponseError = http.Get(fmt.Sprintf(ENDPOINT_MATCHES_BY_ID,server, id, string(KEY)))
 	//use anon struct for the unmarshal function later on
@@ -234,19 +234,17 @@ func (summoner *SummonerProfile) GetMatchesByID(id int, server string) error{
 	//we check if the call was ok
 	//Need to figure out a way to handle the errors better.
 	if ResponseError != nil {
-		return errors.New("An error occured with the request to Rito")
-	} else if Response.StatusCode != 200 {
-		return errors.New("The response code was not 200")
+		return errors.New(ResponseError.Error())
 	} else {
 		//we have received 200 response and now we need to read the body.
 		var ByteResponse, ByteError = ioutil.ReadAll(Response.Body)
 		if ByteError != nil {
-			return errors.New("The Byte Reader did not finish properly")
+			return errors.New(ByteError.Error())
 		} else {
 			
 			var err = json.Unmarshal(ByteResponse,&matches)
 			if err != nil {
-				return errors.New("The decoding went wrong")
+				return errors.New(err.Error())
 			}
 		}
 	}
@@ -267,25 +265,26 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 	var profile = SummonerProfile{}
 	// a bunch of returns, but am not currently able to 'predefine' an error variable that should hold the eventual errors and then just use 1 return at the end.
 	if ResponseError != nil {
-		return &profile, errors.New("Error with the GET request from RITO's API")
-	} else if Response.StatusCode != 200 {
+		return &profile, errors.New(ResponseError.Error())
+	} else if Response.StatusCode != http.StatusOK {
 		return &profile, errors.New("The response code was not 200")
 	} else {
 		//
 		var ByteResponse, ByteError  = ioutil.ReadAll(Response.Body)
 		if ByteError != nil {
-			return &profile, errors.New("The ByteReader did not work properly")
+			return &profile, errors.New(ByteError.Error())
 		} else {
 			var err = json.Unmarshal(ByteResponse, &profile)
 			if err != nil {
-				return &profile, errors.New("Something went wrong with the decoding")
+				return &profile, errors.New(err.Error())
 					
 			}
 			//We need to find a way to cache this
 			// One way could be to just call for summoner and if revision time is different then call
 			var matches_err = profile.GetMatchesByID(profile.AccountId,server)
 			if matches_err != nil {
-				return &profile, errors.New("something went wrong with the matches")
+				fmt.Println("dsadsad")
+				return &profile, nil
 			}
 		}
 	}

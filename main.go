@@ -2,24 +2,35 @@ package main
 
 import ( 
 		"html/template"
-		"fmt"
 		"net/http"
+		"fmt"
 		//"io/ioutil"
-		//"os"
+		"os"
+		"log"
 		"strings"
 		"regexp"
 		"./utils"
 		)
 
+var ERROR_501 = "<html><head><title>Error</title></head><body><h1> 500 - Internal Server Error </h1></body>"
+
 //Entry Point
 func main() {
-	http.ListenAndServe(":8080",New())
+	// set up the logger
+	var logger,err = os.OpenFile("log/log.txt",os.O_WRONLY, 0666)
+	if err != nil {
+		panic(err)
+	}
+	defer logger.Close()
+
+	log.SetOutput(logger)
+	http.ListenAndServe(":8080",New(logger))
 }
 
 //This function returns our object
-func New() http.Handler {
+func New(logger *os.File) http.Handler {
 	var router = http.NewServeMux()
-	var app = App{router}
+	var app = App{router,logger}
 	router.HandleFunc("/", app.Index)
 	router.HandleFunc("/static/css/", app.Static)
 	router.HandleFunc("/get_summoner", app.GetSummoner)
@@ -29,6 +40,7 @@ func New() http.Handler {
 //The main app object that holds the methods for the router and the actual router
 type App struct { 
 	router *http.ServeMux
+	logger *os.File
 }
 
 //Implementing the Interface method
@@ -41,7 +53,7 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (app *App) Index(w http.ResponseWriter, r *http.Request){
 	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("templates/base.html")
 	if err != nil {
-		http.Error(w,"Internal Server Error",http.StatusInternalServerError)
+		http.Error(w,"<h1>Internal Server Error<h1>",http.StatusInternalServerError)
 	} else {
 		IndexTemplate.Execute(w,nil)
 	}
@@ -61,16 +73,16 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 	//Verify that the summoner name is a valid name : https://developer.riotgames.com/getting-started.html
 	var ok, _ = regexp.Match("^[0-9\\p{L} _]+$", []byte(r.Form["SummonerName"][0]))
 	if !ok {
-		http.Error(w,"Internal Server Error",http.StatusInternalServerError)
+		app.Index(w,r)
 	} else {
 		var summoner, err = utils.GetSummonerByName(r.Form["SummonerName"][0],r.Form["Server"][0])
 		if err != nil {
-			fmt.Println(err)
+			log.Println(fmt.Sprintf("FATAL : %s",err))
 			http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 		} else {
 			var SummonerTemplate, err = template.New("SummonerTemplate").ParseFiles("templates/summoner.html")
 			if err != nil {
-				fmt.Println(err)
+				log.Println(fmt.Sprintf("FATAL : %s",err))
 				http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 			} else {
 				SummonerTemplate.Execute(w,summoner)
