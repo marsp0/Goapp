@@ -34,6 +34,7 @@ func New(logger *os.File) http.Handler {
 	router.HandleFunc("/", app.Index)
 	router.HandleFunc("/static/css/", app.Static)
 	router.HandleFunc("/get_summoner", app.GetSummoner)
+	router.HandleFunc("/feedback", app.Feedback)
 	return app
 }
 
@@ -53,7 +54,7 @@ func (app App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (app *App) Index(w http.ResponseWriter, r *http.Request){
 	var IndexTemplate,err = template.New("IndexTemplate").ParseFiles("templates/base.html")
 	if err != nil {
-		http.Error(w,"<h1>Internal Server Error<h1>",http.StatusInternalServerError)
+		http.Error(w,"Internal Server Error",http.StatusInternalServerError)
 	} else {
 		IndexTemplate.Execute(w,nil)
 	}
@@ -78,15 +79,24 @@ func (app *App) GetSummoner(w http.ResponseWriter, r *http.Request) {
 		var summoner, err = utils.GetSummonerByName(r.Form["SummonerName"][0],r.Form["Server"][0])
 		if err != nil {
 			log.Println(fmt.Sprintf("FATAL : %s",err))
-			http.Error(w,"Internal Server Error",http.StatusInternalServerError)
+			app.Index(w,r)
 		} else {
 			var SummonerTemplate, err = template.New("SummonerTemplate").ParseFiles("templates/summoner.html")
 			if err != nil {
 				log.Println(fmt.Sprintf("FATAL : %s",err))
-				http.Error(w,"Internal Server Error",http.StatusInternalServerError)
+				app.Index(w,r)
 			} else {
 				SummonerTemplate.Execute(w,summoner)
 			}
 		}
+	}
+}
+
+func (app *App) Feedback(w http.ResponseWriter, r *http.Request) {
+	var FeedbackTemplate, err = template.New("Feedback").ParseFiles("templates/feedback.html")
+	if err != nil {
+		http.Error(w,"Internal Server Error",http.StatusInternalServerError)
+	} else {
+		FeedbackTemplate.Execute(w,nil)
 	}
 }

@@ -283,7 +283,6 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 			// One way could be to just call for summoner and if revision time is different then call
 			var matches_err = profile.GetMatchesByID(profile.AccountId,server)
 			if matches_err != nil {
-				fmt.Println("dsadsad")
 				return &profile, nil
 			}
 		}
@@ -291,6 +290,7 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 	defer Response.Body.Close()
 	var year, month, day = time.Unix(int64(profile.RevisionDate)/1000,0).Date()
 	profile.LastSeen = fmt.Sprintf("%d-%02d-%02d",year,month,day)
+	fmt.Println(profile.AccountId)
 	return &profile, nil
 }
 

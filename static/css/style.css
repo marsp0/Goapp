@@ -14,10 +14,10 @@
 .navbar-default .navbar-brand:hover {
 	border-bottom: 5px solid white;
 }
-
-.pills .nav-pills .active {
-	background-color:  yellow;
-}
 .pills {
 	padding: 10px 0 10px 0
+}
+
+.row .pills .active {
+	color:green;
 }
