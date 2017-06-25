@@ -1,6 +1,3 @@
-.summoner-info { 
-	padding: 0;
-}
 .main-nav {
 	border-radius: 0;
 	background-color: #0070ba;
@@ -12,4 +9,15 @@
 }
 .navbar-default { 
 	background-image: linear-gradient(10deg, #0070ba, #1546a0)
+}
+
+.navbar-default .navbar-brand:hover {
+	border-bottom: 5px solid white;
+}
+
+.pills .nav-pills .active {
+	background-color:  yellow;
+}
+.pills {
+	padding: 10px 0 10px 0
 }
