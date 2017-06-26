@@ -15,9 +15,9 @@
 	border-bottom: 5px solid white;
 }
 .pills {
-	padding: 10px 0 10px 0
+	padding: 20px 0 20px 0
 }
 
-.row .pills .active {
-	color:green;
+.stocazzo {
+	border: 1px solid black
 }

@@ -20,19 +20,19 @@
 	    </div>
 		<div class="container">
 			<div class ="row">
-				<div class ="col-sm-6 col-sm-offset-3">
+				<div class ="col-sm-4 col-sm-offset-4">
 					<form action = "/get_summoner" method="get">
 						<div class="form-group">
 							<input type="text" class="form-control" placeholder="Summoner Name" name="SummonerName">
 						</div>
-						<div class="form-group">
+						<div class="form-group form-inline">
 							<select class="form-control" id="sel2" name="Server">
-								<option value ="na1">North America</option>
 								<option value = "euw1">Europe West</option>
+								<option value ="na1">North America</option>
 								<option value = "eun1">Europe Nordic and East</option>
 							</select>
+							<button type="submit" class="btn btn-primary pull-right">Search</button>
 						</div>
-						<button type="submit" class="btn btn-default">Search</button>
 					</form>
 				</div>
 			</div>
