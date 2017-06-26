@@ -15,9 +15,18 @@
 	border-bottom: 5px solid white;
 }
 .pills {
-	padding: 20px 0 20px 0
+	padding: 20px 0 20px 0;
+	cursor:pointer;
 }
 
-.stocazzo {
-	border: 1px solid black
+#ranked {
+	display: block;
+}
+
+#recent {
+	display: none;
+}
+
+#live {
+	display: none
 }
