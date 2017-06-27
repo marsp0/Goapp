@@ -4,9 +4,10 @@
 	<head>
 
 		<title>{{.Name}}</title>
-
-		<link href="/static/css/bootstrap.css" rel="stylesheet">
-		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
 		<link href="/static/css/style.css" rel="stylesheet">
 
 	</head>
@@ -19,8 +20,8 @@
 		    	</ul>
 	    	</div>
 		</div>
-		<div class="container" style="border:1px solid #cecece;border-radius:10px">
-			<div class ="row" style="padding-top:10px">
+		<div class="container main-container">
+			<div class ="row summoner-info" >
 					<div class = "col-sm-2 col-sm-offset-4">
 						<img src="http://ddragon.leagueoflegends.com/cdn/7.12.1/img/profileicon/{{.ProfileIconId}}.png" class="img-rounded img-responsive" alt = "Profile Icon" width="150" height="150">
 					</div>
@@ -34,11 +35,12 @@
 				<ul class ="nav nav-tabs nav-justified pills">
 					<li id="ranked-li" class ="active"><a onclick="toggler('ranked')">Ranked</a></li>
 					<li id="recent-li"><a onclick="toggler('recent')">Recent Matches</a></li>
+					<li id="league-li"><a onclick="toggler('league')">Leagues</a></li>
 					<li id="live-li"><a onclick="toggler('live')">Live Game</a></li>
 				</ul>
 			</div>
 			<div class ="row" id='recent'>
-				<table class="table table-hover text-center">
+				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th class = "text-center">Date</th>
@@ -58,7 +60,7 @@
 			  	</table>
 			</div>
 			<div class ="row" id="ranked">
-				<table class="table table-hover ops">
+				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th class = "text-center">Date</th>
@@ -68,15 +70,21 @@
 					</thead>
 					<tbody>
 						{{range $index, $value := .Ranked}}
-							<tr>
+							<tr >
 								<td class = "text-center"> {{$value.Date}} </td>
 								<td class = "text-center"> {{$value.ChampionName}} </td>
-								<td class = "text-center"> dsa</td>
+								<td class = "text-center" > More Info</td>
 							</tr>
 						{{end}}
+							<tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
+								<td>dsads</td>
+							</tr>
+							<tr>
+								<td colspan="6"> <div id="demo2" class="accordion-body collapse"> Demo1</div></td>
+							</tr>
 					</tbody>
-			  	</table>
-			</div>
+				</table>
+        	</div>
 			<div class ="row" id="live">
 			</div>
 		</div>
@@ -116,8 +124,8 @@
 		        $("#ranked-li").removeClass("active");
 		    }
 		}
-		</script>s
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		</script>
+		
 	</body>
 </html>
 {{end}}

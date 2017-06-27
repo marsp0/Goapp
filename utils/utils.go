@@ -285,7 +285,7 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 			profile.Matches = *RecentMatches
 			for i := 0; i < len(profile.Matches); i++ {
 				var year,month,day = time.Unix(int64(profile.Matches[i].Timestamp)/1000,0).Date()
-				profile.Matches[i].Date = fmt.Sprintf("%d-%02d-%02d", year,month,day)
+				profile.Matches[i].Date = fmt.Sprintf("%02d-%02d-%d", day,month,year)
 				profile.Matches[i].Mode = GameModes[profile.Matches[i].Queue]
 				profile.Matches[i].ChampionName = Champions[profile.Matches[i].Champion]
 			}
@@ -293,7 +293,7 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 			profile.Ranked = *RankedMatches
 			for i := 0; i < len(profile.Ranked); i++ {
 				var year,month,day = time.Unix(int64(profile.Ranked[i].Timestamp)/1000,0).Date()
-				profile.Ranked[i].Date = fmt.Sprintf("%d-%02d-%02d", year,month,day)
+				profile.Ranked[i].Date = fmt.Sprintf("%02d-%02d-%d", day,month,year)
 				profile.Ranked[i].Mode = GameModes[profile.Ranked[i].Queue]
 				profile.Ranked[i].ChampionName = Champions[profile.Ranked[i].Champion]
 			}
@@ -302,7 +302,6 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error ) {
 	defer Response.Body.Close()
 	var year, month, day = time.Unix(int64(profile.RevisionDate)/1000,0).Date()
 	profile.LastSeen = fmt.Sprintf("%d-%02d-%02d",year,month,day)
-	fmt.Println(profile.Matches)
 	return &profile, nil
 }
 
