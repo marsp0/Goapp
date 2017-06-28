@@ -32,9 +32,10 @@ func New(logger *os.File) http.Handler {
 	var router = http.NewServeMux()
 	var app = App{router,logger}
 	router.HandleFunc("/", app.Index)
-	router.HandleFunc("/static/css/", app.Static)
+	router.HandleFunc("/static/", app.Static)
 	router.HandleFunc("/get_summoner", app.GetSummoner)
 	router.HandleFunc("/feedback", app.Feedback)
+	router.HandleFunc("/get_match_info", app.GetMatchInfo)
 	return app
 }
 
@@ -99,4 +100,10 @@ func (app *App) Feedback(w http.ResponseWriter, r *http.Request) {
 	} else {
 		FeedbackTemplate.Execute(w,nil)
 	}
+}
+
+
+func (app *App) GetMatchInfo(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	var MatchId = r.Form["MatchId"][0]
 }

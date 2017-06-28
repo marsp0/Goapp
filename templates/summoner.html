@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		
+		<script type ="text/javascript" src="/static/js/shroomed.js"></script>
 		<link href="/static/css/style.css" rel="stylesheet">
 
 	</head>
@@ -65,7 +65,7 @@
 						<tr>
 							<th class = "text-center">Date</th>
 							<th class = "text-center">Champion</th>
-							<th class = "text-center">More Info</th>
+							<th class = "text-center"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -73,15 +73,12 @@
 							<tr >
 								<td class = "text-center"> {{$value.Date}} </td>
 								<td class = "text-center"> {{$value.ChampionName}} </td>
-								<td class = "text-center" > More Info</td>
-							</tr>
-						{{end}}
-							<tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
-								<td>dsads</td>
+								<td class="text-center"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-xs" style="margin:0" onclick="GetMatchInfo({{$value.GameId}},{{$index}})"> More info</button></td>
 							</tr>
 							<tr>
-								<td colspan="6"> <div id="demo2" class="accordion-body collapse"> Demo1</div></td>
+								<td colspan="6" style="padding:0 !important;"> <div id="{{$index}}" class="accordion-body collapse" aria-expanded="false"> {{$value.GameId}}</div></td>
 							</tr>
+						{{end}}
 					</tbody>
 				</table>
         	</div>
@@ -89,43 +86,7 @@
 			</div>
 		</div>
 		<!-- /container -->
-		<script>
-		function toggler(value) {
-		    if (value === "ranked") {
-		        var live_1 = document.getElementById("live");
-		        var recent_1 = document.getElementById("recent");
-		        var ranked_1 = document.getElementById("ranked");
-		        live_1.style.display = "none";
-		        recent_1.style.display = "none";
-		        ranked_1.style.display = "block";
-		        $("#live-li").removeClass("active");
-		        $("#recent-li").removeClass("active");
-		        $("#ranked-li").addClass("active");
 
-		    } else if (value === "recent") {
-		        var ranked_2 = document.getElementById("ranked");
-		        var live_2 = document.getElementById("live");
-		        var recent_2 = document.getElementById("recent");
-		        live_2.style.display = "none";
-		        ranked_2.style.display = "none";
-		        recent_2.style.display = "block";
-		        $("#live-li").removeClass("active");
-		        $("#recent-li").addClass("active");
-		        $("#ranked-li").removeClass("active");
-		    } else {
-		        var ranked_3 = document.getElementById("ranked");
-		        var live_3 = document.getElementById("live");
-		        var recent_3 = document.getElementById("recent");
-		        ranked_3.style.display = "none";
-		        recent_3.style.display = "none";
-		        live_3.style.display = "block";
-		        $("#live-li").addClass("active");
-		        $("#recent-li").removeClass("active");
-		        $("#ranked-li").removeClass("active");
-		    }
-		}
-		</script>
-		
 	</body>
 </html>
 {{end}}

@@ -12,6 +12,7 @@ const ENDPOINT_SUMMONER_BY_NAME = "https://%s.api.riotgames.com/lol/summoner/v3/
 const ENDPOINT_MATCHES_BY_ID = "https://%s.api.riotgames.com/lol/match/v3/matchlists/by-account/%d/recent?api_key=%s"
 const ENDPOINT_RANKED_BY_ID = "https://%s.api.riotgames.com/lol/match/v3/matchlists/by-account/%d?api_key=%s"
 const ENDPOINT_CHAMPIONS_BY_ID = "https://%s.api.riotgames.com/lol/static-data/v3/champions/%d"
+const ENDPOINT_FEATURED_GAMES = "https://%s.api.riotgames.com/lol/spectator/v3/featured-games"
 var KEY,ok = ioutil.ReadFile("config.txt")
 
 var GameModes = map[int]string{
