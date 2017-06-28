@@ -73,7 +73,7 @@
 							<tr >
 								<td class = "text-center"> {{$value.Date}} </td>
 								<td class = "text-center"> {{$value.ChampionName}} </td>
-								<td class="text-center"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-xs" style="margin:0" onclick="GetMatchInfo({{$value.GameId}},{{$index}})"> More info</button></td>
+								<td class="text-center"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-xs" style="margin:0" onclick="GetMatchInfo({{$value.GameId}},{{$index}}, {{$value.PlatformId}})"> More info</button></td>
 							</tr>
 							<tr>
 								<td colspan="6" style="padding:0 !important;"> <div id="{{$index}}" class="accordion-body collapse" aria-expanded="false"> {{$value.GameId}}</div></td>

@@ -1,2 +1,0 @@
-2017/06/26 23:39:06 FATAL : The response code was not 200
-2017/06/26 23:40:09 FATAL : The response code was not 200

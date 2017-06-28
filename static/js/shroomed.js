@@ -34,7 +34,7 @@ function toggler(value) {
     }
 }
 
-function GetMatchInfo(matchId,index) {
+function GetMatchInfo(matchId,index,server) {
 	"use strict";
 	// need to add check if the game was already requested
 	// Do not wanna make multiple calls for the same game
@@ -43,7 +43,7 @@ function GetMatchInfo(matchId,index) {
 		$.ajax({
 		url: "get_match_info",
 		type:"get",
-		data: {"MatchId":matchId},
+		data: {"MatchId":matchId, "Server":server},
 
 		})
 	}
