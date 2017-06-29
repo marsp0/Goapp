@@ -40,7 +40,7 @@
 				</ul>
 			</div>
 			<div class ="row" id='recent'>
-				<table class="table table-hover">
+				<table class="table">
 					<thead>
 						<tr>
 							<th class = "text-center">Date</th>
@@ -60,20 +60,15 @@
 			  	</table>
 			</div>
 			<div class ="row" id="ranked">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th class = "text-center">Date</th>
-							<th class = "text-center">Champion</th>
-							<th class = "text-center"></th>
-						</tr>
-					</thead>
+				<table class="table">
 					<tbody>
 						{{range $index, $value := .Ranked}}
-							<tr >
-								<td class = "text-center"> {{$value.Date}} </td>
-								<td class = "text-center"> {{$value.ChampionName}} </td>
-								<td class="text-center"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-xs" style="margin:0" onclick="GetMatchInfo({{$value.GameId}},{{$index}}, {{$value.PlatformId}})"> More info</button></td>
+							<tr>
+								<td class = "vert-aligned col-xs-1"> {{$value.Date}}	</td>
+								
+								<td class = "vert-aligned"><img src="http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{{$value.ChampionName}}.png" class="img-rounded img-responsive" alt = "Profile Icon" width="40"> </td>
+								
+								<td class="text-right vert-aligned"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-md" style="margin:0" onclick="GetMatchInfo({{$value.GameId}},{{$index}}, {{$value.PlatformId}})"> More info</button></td>
 							</tr>
 							<tr>
 								<td colspan="6" style="padding:0 !important;"> <div id="{{$index}}" class="accordion-body collapse" aria-expanded="false"> 

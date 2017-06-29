@@ -40,3 +40,7 @@
 .main-container .summoner-info {
 	padding: 10px 0;
 }
+
+.table > tbody > tr > td.vert-aligned {
+	vertical-align: middle;
+}
