@@ -225,22 +225,23 @@ type DetailedMatch struct {
 	Participants          []Participant
 	GameDuration          int
 	GameCreation          int
+
 }
 
 type ParticipantIty struct {
 	ParticipantId int
-	Player        []Player
+	Player        Player
 }
 
 type Player struct {
-	CurrentPlatformId string
-	SummonerName      string
-	MatchHistoryUri   string
-	PlatformId        string
-	CurrentAccountId  int
-	ProfileIcon       int
-	SummonerId        int
-	AccountId         int
+	CurrentPlatformId string `json:"currentPlatformId"`
+	SummonerName      string `json:"summonerName"`
+	MatchHistoryUri   string `json:"matchHistoryUri"`
+	PlatformId        string `json:"platformId"`
+	CurrentAccountId  int `json:"currentAccountId"`
+	ProfileIcon       int `json:"profileIcon"`
+	SummonerId        int `json:"summonerId"`
+	AccountId         int `json:"accountId"`
 }
 
 type Team struct {
@@ -268,10 +269,10 @@ type TeamBans struct {
 }
 
 type Participant struct {
-	Stats                     []Stats `json: "stats"`
+	Stats                     Stats
 	ParticipantId             int
 	Runes                     []Rune
-	Timeline                  []ParticipantTimeline
+	Timeline                  ParticipantTimeline
 	TeamId                    int
 	Spell2Id                  int
 	Masteries                 []Mastery
@@ -318,40 +319,40 @@ type Stats struct {
 	ChampLevel                      int
 	NodeNeutralizeAssist            int
 	FirstInhibitorKill              bool
-	GoldEarned           int
-	MagicalDamageTaken   int
-	Kills                int
-	DoubleKills          int
-	NodeCaptureAssist    int
-	TrueDamageTaken      int
-	NodeNeutralize       int
-	FirstInhibitorAssist bool
-	Assists                        int
-	UnrealKills                    int
-	NeutralMinionsKilled           int
-	ObjectivePlayerScore           int
-	CombatPlayerScore              int
-	DamageDealtToTurrets           int
-	AltarsNeutralized              int
-	PhysicalDamageDealtToChampions int
-	GoldSpent                      int
-	TrueDamageDealt                int
-	TrueDamageDealtToChampions     int
-	ParticipantId                  int
-	PentaKills                     int
-	TotalHeal                      int
-	TotalMinionsKilled             int
-	FirstBloodKill                 bool
-	LargestMultiKill            int
-	SightWardsBoughtInGame      int
-	TotalDamageDealtToChampions int
-	TotalUnitsHealed            int
-	InhibitorKills              int
-	TotalScoreRank              int
-	TotalDamageTaken            int
-	KillingSprees               int
-	TimeCCingOthers             int
-	PhysicalDamageTaken         int
+	GoldEarned                      int
+	MagicalDamageTaken              int
+	Kills                           int
+	DoubleKills                     int
+	NodeCaptureAssist               int
+	TrueDamageTaken                 int
+	NodeNeutralize                  int
+	FirstInhibitorAssist            bool
+	Assists                         int
+	UnrealKills                     int
+	NeutralMinionsKilled            int
+	ObjectivePlayerScore            int
+	CombatPlayerScore               int
+	DamageDealtToTurrets            int
+	AltarsNeutralized               int
+	PhysicalDamageDealtToChampions  int
+	GoldSpent                       int
+	TrueDamageDealt                 int
+	TrueDamageDealtToChampions      int
+	ParticipantId                   int
+	PentaKills                      int
+	TotalHeal                       int
+	TotalMinionsKilled              int
+	FirstBloodKill                  bool
+	LargestMultiKill                int
+	SightWardsBoughtInGame          int
+	TotalDamageDealtToChampions     int
+	TotalUnitsHealed                int
+	InhibitorKills                  int
+	TotalScoreRank                  int
+	TotalDamageTaken                int
+	KillingSprees                   int
+	TimeCCingOthers                 int
+	PhysicalDamageTaken             int
 }
 
 type Rune struct {
@@ -373,8 +374,8 @@ type ParticipantTimeline struct {
 }
 
 type Mastery struct {
-	MasteryId	int	
-	Rank int
+	MasteryId int
+	Rank      int
 }
 
 //Struct for the Profile of each summoner
@@ -484,7 +485,7 @@ func GetMatchById(matchId string, server string) (*DetailedMatch, error) {
 				fmt.Println(UnmarshalError)
 				return &Details, UnmarshalError
 			} else {
-				fmt.Println(Details)
+
 				return &Details, nil
 			}
 		}

@@ -104,5 +104,16 @@ func (app *App) Feedback(w http.ResponseWriter, r *http.Request) {
 
 func (app *App) GetMatchInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	var _, _ = utils.GetMatchById(r.Form["MatchId"][0], r.Form["Server"][0])
+	var Details, Err = utils.GetMatchById(r.Form["MatchId"][0], r.Form["Server"][0])
+	if Err != nil {
+		w.Write([]byte("No Info"))
+	} else {
+		var MatchTemplate, TemplateError = template.New("MatchInfo").ParseFiles("templates/MatchInfo.html")
+		if TemplateError != nil {
+			fmt.Println(TemplateError)
+			w.Write([]byte("No info"))
+		} else {
+			MatchTemplate.Execute(w,Details.ParticipantIdentities)
+		}
+	}
 }

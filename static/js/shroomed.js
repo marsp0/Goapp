@@ -44,7 +44,7 @@ function GetMatchInfo(matchId,index,server) {
 		url: "get_match_info",
 		type:"get",
 		data: {"MatchId":matchId, "Server":server},
-
-		})
+        success: function(data) {$("#" + index).append("<p>" + data + "</p>");}
+		});
 	}
 }

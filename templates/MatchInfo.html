@@ -1,0 +1,47 @@
+{{define "MatchInfo"}}
+
+<div class="container-fluid">
+
+	<div class="row">
+		<div class ="col-sm-6">
+			<table class="table text-center">
+				<thead>
+					<tr>
+						<td>Team 1</td>
+					</tr>
+				</thead>
+				<tbody>
+					{{range $index, $value := .}}
+						{{if team1 $value.Player.TeamId}}
+							<tr>
+								<td>{{$value.Player.SummonerName}}</td>
+							</tr>
+							<tr>
+								dsa
+							</tr>
+						{{end}}
+					{{end}}
+				</tbody>
+			</table>
+		</div>
+		<div class ="col-sm-6 col-sm-offset-6">
+			<table class="table text-center">
+				<thead>
+					<tr>
+						<td>Team 2</td>
+					</tr>
+				</thead>
+				<tbody>
+					{{range $index, $value := .}}
+						{{if team2 .Player.TeamId}}
+						<tr>
+							<td>.Player.SummonerName</td>
+						</tr>
+						{{end}}
+					{{end}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{{end}}
