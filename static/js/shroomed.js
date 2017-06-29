@@ -36,10 +36,9 @@ function toggler(value) {
 
 function GetMatchInfo(matchId,index,server) {
 	"use strict";
-	// need to add check if the game was already requested
-	// Do not wanna make multiple calls for the same game
 	var x = $("#" + index).attr("aria-expanded");
-	if (x === "false") {
+    var y = document.getElementsByClassName("info-present-"+matchId);
+	if (x === "false" && y.length == 0) {
 		$.ajax({
 		url: "get_match_info",
 		type:"get",

@@ -225,7 +225,7 @@ type DetailedMatch struct {
 	Participants          []Participant
 	GameDuration          int
 	GameCreation          int
-
+	Separator int
 }
 
 type ParticipantIty struct {
@@ -238,10 +238,10 @@ type Player struct {
 	SummonerName      string `json:"summonerName"`
 	MatchHistoryUri   string `json:"matchHistoryUri"`
 	PlatformId        string `json:"platformId"`
-	CurrentAccountId  int `json:"currentAccountId"`
-	ProfileIcon       int `json:"profileIcon"`
-	SummonerId        int `json:"summonerId"`
-	AccountId         int `json:"accountId"`
+	CurrentAccountId  int    `json:"currentAccountId"`
+	ProfileIcon       int    `json:"profileIcon"`
+	SummonerId        int    `json:"summonerId"`
+	AccountId         int    `json:"accountId"`
 }
 
 type Team struct {
@@ -485,7 +485,7 @@ func GetMatchById(matchId string, server string) (*DetailedMatch, error) {
 				fmt.Println(UnmarshalError)
 				return &Details, UnmarshalError
 			} else {
-
+				Details.Separator = 6
 				return &Details, nil
 			}
 		}

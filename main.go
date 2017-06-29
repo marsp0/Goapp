@@ -113,7 +113,7 @@ func (app *App) GetMatchInfo(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(TemplateError)
 			w.Write([]byte("No info"))
 		} else {
-			MatchTemplate.Execute(w,Details.ParticipantIdentities)
+			MatchTemplate.Execute(w, Details)
 		}
 	}
 }
