@@ -34,30 +34,9 @@
 			<div class="row">
 				<ul class ="nav nav-tabs nav-justified pills">
 					<li id="ranked-li" class ="active"><a onclick="toggler('ranked')">Ranked</a></li>
-					<li id="recent-li"><a onclick="toggler('recent')">Recent Matches</a></li>
 					<li id="league-li"><a onclick="toggler('league')">Leagues</a></li>
 					<li id="live-li"><a onclick="toggler('live')">Live Game</a></li>
 				</ul>
-			</div>
-			<div class ="row" id='recent'>
-				<table class="table">
-					<thead>
-						<tr>
-							<th class = "text-center">Date</th>
-							<th class = "text-center">Champion</th>
-							<th class = "text-center">Mode</th>
-						</tr>
-					</thead>
-					<tbody>
-						{{range $index, $value := .Matches}}
-							<tr>
-								<td class = "text-center"> {{$value.Date}} </td>
-								<td class = "text-center"> {{$value.ChampionName}} </td>
-								<td class = "text-center"> {{$value.Mode}}</td>
-							</tr>
-						{{end}}
-					</tbody>
-			  	</table>
 			</div>
 			<div class ="row" id="ranked">
 				<table class="table">

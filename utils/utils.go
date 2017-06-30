@@ -14,7 +14,7 @@ const ENDPOINT_RECENT_MATCHES_BY_ID = "https://%s.api.riotgames.com/lol/match/v3
 const ENDPOINT_RANKED_BY_ID = "https://%s.api.riotgames.com/lol/match/v3/matchlists/by-account/%d?api_key=%s"
 const ENDPOINT_CHAMPIONS_BY_ID = "https://%s.api.riotgames.com/lol/static-data/v3/champions/%d"
 const ENDPOINT_FEATURED_GAMES = "https://%s.api.riotgames.com/lol/spectator/v3/featured-games"
-const ENDPOINT_MATCH_BY_GAME_ID = "https://%s.api.riotgames.com/lol/match/v3/matches/%s?api_key=%s"
+const ENDPOINT_MATCH_BY_GAME_ID = "https://%s.api.riotgames.com/lol/match/v3/matches/%d?api_key=%s"
 
 var KEY, ok = ioutil.ReadFile("config.txt")
 
@@ -387,11 +387,12 @@ type SummonerProfile struct {
 	LastSeen      string
 	Id            int //Summoner ID - NOT ACCOUNT ID
 	AccountId     int
-	Matches       []Match
 	Ranked        []Match
+	RankedDetailed []DetailedMatch
 }
 
 func (summoner *SummonerProfile) GetMatchesByAccountID(id int, server string, endpoint string, ranked bool) (*[]Match, error) {
+	fmt.Println(fmt.Sprintf(endpoint, server, id, string(KEY)))
 	// Call the end point to get the matches
 	if ranked {
 		var UnixTime = (time.Now().Unix() - 1296000) * 1000
@@ -443,14 +444,6 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 			}
 			//We need to find a way to cache this
 			// One way could be to just call for summoner and if revision time is different then call
-			var RecentMatches, _ = profile.GetMatchesByAccountID(profile.AccountId, server, ENDPOINT_RECENT_MATCHES_BY_ID, false)
-			profile.Matches = *RecentMatches
-			for i := 0; i < len(profile.Matches); i++ {
-				var year, month, day = time.Unix(int64(profile.Matches[i].Timestamp)/1000, 0).Date()
-				profile.Matches[i].Date = fmt.Sprintf("%02d-%02d-%d", day, month, year)
-				profile.Matches[i].Mode = GameModes[profile.Matches[i].Queue]
-				profile.Matches[i].ChampionName = Champions[profile.Matches[i].Champion]
-			}
 			var RankedMatches, _ = profile.GetMatchesByAccountID(profile.AccountId, server, ENDPOINT_RANKED_BY_ID, true)
 			profile.Ranked = *RankedMatches
 			for i := 0; i < len(profile.Ranked); i++ {
@@ -458,6 +451,9 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				profile.Ranked[i].Date = fmt.Sprintf("%02d-%02d-%d", day, month, year)
 				profile.Ranked[i].Mode = GameModes[profile.Ranked[i].Queue]
 				profile.Ranked[i].ChampionName = Champions[profile.Ranked[i].Champion]
+				var match, _ = profile.GetMatchById(profile.Ranked[i].GameId, profile.Ranked[i].PlatformId)
+				profile.RankedDetailed = append(profile.RankedDetailed, *match)
+
 			}
 		}
 	}
@@ -467,12 +463,14 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 	return &profile, nil
 }
 
-func GetMatchById(matchId string, server string) (*DetailedMatch, error) {
+func (summoner *SummonerProfile) GetMatchById(matchId int, server string) (*DetailedMatch, error) {
+	fmt.Println(fmt.Sprintf(ENDPOINT_MATCH_BY_GAME_ID, server, matchId, string(KEY)))
 	var Response, err = http.Get(fmt.Sprintf(ENDPOINT_MATCH_BY_GAME_ID, server, matchId, string(KEY)))
+	defer Response.Body.Close()
+	fmt.Println("dsa")
 	var Details = DetailedMatch{}
-
 	if err != nil {
-		fmt.Println(123)
+		fmt.Println(err)
 		return &Details, err
 	} else {
 		var ByteResponse, ByteError = ioutil.ReadAll(Response.Body)

@@ -11,16 +11,6 @@ function toggler(value) {
         $("#recent-li").removeClass("active");
         $("#ranked-li").addClass("active");
 
-    } else if (value === "recent") {
-        var ranked_2 = document.getElementById("ranked");
-        var live_2 = document.getElementById("live");
-        var recent_2 = document.getElementById("recent");
-        live_2.style.display = "none";
-        ranked_2.style.display = "none";
-        recent_2.style.display = "block";
-        $("#live-li").removeClass("active");
-        $("#recent-li").addClass("active");
-        $("#ranked-li").removeClass("active");
     } else {
         var ranked_3 = document.getElementById("ranked");
         var live_3 = document.getElementById("live");
