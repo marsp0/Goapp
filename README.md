@@ -1,2 +1,2 @@
 # Goapp
-In this repo I will try to build a website using only the standard library of GO. Any suggestions and feedback are appreciated.
+Repo for the shroomed webapp written in GO
