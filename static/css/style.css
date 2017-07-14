@@ -20,10 +20,6 @@
 	display: block;
 }
 
-#recent {
-	display: none;
-}
-
 #live {
 	display: none;
 }
@@ -43,4 +39,20 @@
 
 .table > tbody > tr > td.vert-aligned {
 	vertical-align: middle;
+}
+
+tbody td .result-icon {
+	font-size: 50px;
+}
+
+tbody td .win-icon {
+	color:green;
+}
+
+tbody td .lose-icon {
+	color: red;
+}
+
+tbody .summary {
+	height: 100px;
 }

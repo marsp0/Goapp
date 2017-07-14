@@ -225,7 +225,7 @@ type DetailedMatch struct {
 	Participants          []Participant
 	GameDuration          int
 	GameCreation          int
-	Separator int
+	Separator             int
 }
 
 type ParticipantIty struct {
@@ -380,14 +380,14 @@ type Mastery struct {
 
 //Struct for the Profile of each summoner
 type SummonerProfile struct {
-	ProfileIconId int
-	Name          string
-	SummonerLevel int
-	RevisionDate  int //when was the profile last modified. It is given as epoch milliseconds (w/e that means, need to check it out)
-	LastSeen      string
-	Id            int //Summoner ID - NOT ACCOUNT ID
-	AccountId     int
-	Ranked        []Match
+	ProfileIconId  int
+	Name           string
+	SummonerLevel  int
+	RevisionDate   int //when was the profile last modified. It is given as epoch milliseconds (w/e that means, need to check it out)
+	LastSeen       string
+	Id             int //Summoner ID - NOT ACCOUNT ID
+	AccountId      int
+	Ranked         []Match
 	RankedDetailed []DetailedMatch
 }
 
@@ -395,8 +395,7 @@ func (summoner *SummonerProfile) GetMatchesByAccountID(id int, server string, en
 	fmt.Println(fmt.Sprintf(endpoint, server, id, string(KEY)))
 	// Call the end point to get the matches
 	if ranked {
-		var UnixTime = (time.Now().Unix() - 1296000) * 1000
-		endpoint += fmt.Sprintf("&beginTime=%d", UnixTime)
+		endpoint += "&beginIndex=0&endIndex=10"
 	}
 	var Response, ResponseError = http.Get(fmt.Sprintf(endpoint, server, id, string(KEY)))
 	//use anon struct for the unmarshal function later on
@@ -453,7 +452,8 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				profile.Ranked[i].ChampionName = Champions[profile.Ranked[i].Champion]
 				var match, _ = profile.GetMatchById(profile.Ranked[i].GameId, profile.Ranked[i].PlatformId)
 				profile.RankedDetailed = append(profile.RankedDetailed, *match)
-
+				fmt.Println(match)
+				fmt.Println()
 			}
 		}
 	}
@@ -467,7 +467,6 @@ func (summoner *SummonerProfile) GetMatchById(matchId int, server string) (*Deta
 	fmt.Println(fmt.Sprintf(ENDPOINT_MATCH_BY_GAME_ID, server, matchId, string(KEY)))
 	var Response, err = http.Get(fmt.Sprintf(ENDPOINT_MATCH_BY_GAME_ID, server, matchId, string(KEY)))
 	defer Response.Body.Close()
-	fmt.Println("dsa")
 	var Details = DetailedMatch{}
 	if err != nil {
 		fmt.Println(err)
