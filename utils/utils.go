@@ -476,8 +476,6 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				profile.RankedDetailed = append(profile.RankedDetailed, *match)
 				var matchSummary = profile.GetMatchSummary(match)
 				profile.RankedSummary[match.GameId] = *matchSummary
-				fmt.Println(match)
-				fmt.Println()
 			}
 		}
 	}

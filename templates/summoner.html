@@ -41,11 +41,11 @@
 			<div class ="row" id="ranked">
 				<table class="table">
 					<tbody>
-						{{range $index, $value := .Ranked}}
+						{{$self := .}}
+						{{range $index, $value := $self.Ranked}}
 							<tr class = "summary">
-
-								<td class = "vert-aligned col-xs-1 text-center"><i class="glyphicon glyphicon-upload result-icon win-icon"></i></td>
-								
+								{{$result := index $self.RankedSummary $value.GameId}}
+								<td class = "vert-aligned col-xs-1 text-center"><i class="glyphicon glyphicon-{{$result.Result}} result-icon {{$result.Result}}-icon"></i></td>
 								<td class = "vert-aligned">
 									<div>
 										
