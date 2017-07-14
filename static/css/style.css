@@ -46,13 +46,13 @@ tbody td .result-icon {
 }
 
 tbody td .win-icon {
-	color:green;
+	color:#2796BC;
 }
 
 tbody td .lose-icon {
-	color: red;
+	color: #E9422E;
 }
 
 tbody .summary {
-	height: 100px;
+	height: 80px;
 }

@@ -378,6 +378,26 @@ type Mastery struct {
 	Rank      int
 }
 
+type MatchSummary struct {
+	ParticipantID      int
+	Spell1Id           int
+	Spell2Id           int
+	Item0              int
+	Item1              int
+	Item2              int
+	Item3              int
+	Item4              int
+	Item5              int
+	Item6              int
+	Kills              int
+	Assists            int
+	Deaths             int
+	GoldEarned         int
+	TotalMinionsKilled int
+	LargestMultiKill   int
+	Result             string
+}
+
 //Struct for the Profile of each summoner
 type SummonerProfile struct {
 	ProfileIconId  int
@@ -389,6 +409,7 @@ type SummonerProfile struct {
 	AccountId      int
 	Ranked         []Match
 	RankedDetailed []DetailedMatch
+	RankedSummary  map[int]MatchSummary
 }
 
 func (summoner *SummonerProfile) GetMatchesByAccountID(id int, server string, endpoint string, ranked bool) (*[]Match, error) {
@@ -425,6 +446,7 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 	//The function should return profile address and an error. We need it in case where we cannot get the profile for some reason
 	var Response, ResponseError = http.Get(fmt.Sprintf(ENDPOINT_SUMMONER_BY_NAME, server, name, string(KEY)))
 	var profile = SummonerProfile{}
+	profile.RankedSummary = make(map[int]MatchSummary)
 	// a bunch of returns, but am not currently able to 'predefine' an error variable that should hold the eventual errors and then just use 1 return at the end.
 	if ResponseError != nil {
 		return &profile, ResponseError
@@ -452,6 +474,8 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				profile.Ranked[i].ChampionName = Champions[profile.Ranked[i].Champion]
 				var match, _ = profile.GetMatchById(profile.Ranked[i].GameId, profile.Ranked[i].PlatformId)
 				profile.RankedDetailed = append(profile.RankedDetailed, *match)
+				var matchSummary = profile.GetMatchSummary(match)
+				profile.RankedSummary[match.GameId] = *matchSummary
 				fmt.Println(match)
 				fmt.Println()
 			}
@@ -487,4 +511,51 @@ func (summoner *SummonerProfile) GetMatchById(matchId int, server string) (*Deta
 			}
 		}
 	}
+}
+
+func (summoner *SummonerProfile) GetMatchSummary(match *DetailedMatch) *MatchSummary {
+	matchSummary := MatchSummary{}
+	for i := 0; i < 10; i++ {
+		if match.ParticipantIdentities[i].Player.SummonerName == summoner.Name {
+			matchSummary.ParticipantID = match.ParticipantIdentities[i].ParticipantId
+		}
+	}
+	for i := 0; i < 10; i++ {
+		if match.Participants[i].ParticipantId == matchSummary.ParticipantID {
+			matchSummary.Spell1Id = match.Participants[i].Spell1Id
+			matchSummary.Spell2Id = match.Participants[i].Spell2Id
+			matchSummary.Item0 = match.Participants[i].Stats.Item0
+			matchSummary.Item1 = match.Participants[i].Stats.Item1
+			matchSummary.Item2 = match.Participants[i].Stats.Item2
+			matchSummary.Item3 = match.Participants[i].Stats.Item3
+			matchSummary.Item4 = match.Participants[i].Stats.Item4
+			matchSummary.Item5 = match.Participants[i].Stats.Item5
+			matchSummary.Item6 = match.Participants[i].Stats.Item6
+			matchSummary.Kills = match.Participants[i].Stats.Kills
+			matchSummary.Deaths = match.Participants[i].Stats.Deaths
+			matchSummary.Assists = match.Participants[i].Stats.Assists
+			matchSummary.GoldEarned = match.Participants[i].Stats.GoldEarned
+			matchSummary.TotalMinionsKilled = match.Participants[i].Stats.TotalMinionsKilled
+			matchSummary.LargestMultiKill = match.Participants[i].Stats.LargestMultiKill
+		}
+		var team int
+		if matchSummary.ParticipantID < 6 {
+			team = 100
+		} else {
+			team = 200
+		}
+		for i := 0; i < 2; i++ {
+			if match.Teams[i].TeamId == team {
+				var result string
+				if match.Teams[i].Win == "Win" {
+					result = "upload"
+				} else {
+					result = "download"
+				}
+				matchSummary.Result = result
+			}
+		}
+	}
+	return &matchSummary
+
 }

@@ -17,17 +17,3 @@ function toggler(value) {
         $("#ranked-li").removeClass("active");
     }
 }
-
-function GetMatchInfo(matchId,index,server) {
-	"use strict";
-	var x = $("#" + index).attr("aria-expanded");
-    var y = document.getElementsByClassName("info-present-"+matchId);
-	if (x === "false" && y.length == 0) {
-		$.ajax({
-		url: "get_match_info",
-		type:"get",
-		data: {"MatchId":matchId, "Server":server},
-        success: function(data) {$("#" + index).append("<p>" + data + "</p>");}
-		});
-	}
-}

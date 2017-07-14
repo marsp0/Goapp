@@ -43,21 +43,17 @@
 					<tbody>
 						{{range $index, $value := .Ranked}}
 							<tr class = "summary">
-								<td class = "vert-aligned col-xs-1 text-center"><i class="glyphicon glyphicon-remove-circle result-icon win-icon"></i></td>
+
+								<td class = "vert-aligned col-xs-1 text-center"><i class="glyphicon glyphicon-upload result-icon win-icon"></i></td>
 								
 								<td class = "vert-aligned">
 									<div>
 										
-										<img src="http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{{$value.ChampionName}}.png" class="img-rounded img-responsive" alt = "Profile Icon" width="80"> 
+										<img src="http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{{$value.ChampionName}}.png" class="img-rounded img-responsive" alt = "Profile Icon" width="60"> 
 									</div>
 								</td>
 								
-								<td class="text-right col-xs-1 vert-aligned"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-md" style="margin:0" onclick="GetMatchInfo({{$value.GameId}},{{$index}}, {{$value.PlatformId}})"> More info</button></td>
-							</tr>
-							<tr>
-								<td colspan="6" style="padding:0 !important;"> <div id="{{$index}}" class="accordion-body collapse" aria-expanded="false"> 
-
-								</div>
+								<td class="text-right col-xs-1 vert-aligned"><a href="/"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-md" style="margin:0">More Info</button> </a> </td>
 							</tr>
 						{{end}}
 					</tbody>
