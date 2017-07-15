@@ -71,7 +71,7 @@ var GameModes = map[int]string{
 	400: "Normal 5v5 Draft Pick",
 	420: "Solo Queue",
 	430: "Normal 5v5 Blind Pick",
-	440: "Ranked Flex",
+	440: "Flex Queue",
 	600: "Blood Hunt Assassin",
 	610: "Dark Star"}
 
@@ -429,11 +429,12 @@ type SummonerProfile struct {
 }
 
 func (summoner *SummonerProfile) GetMatchesByAccountID(id int, server string, endpoint string, ranked bool) (*[]Match, error) {
-	fmt.Println(fmt.Sprintf(endpoint, server, id, string(KEY)))
 	// Call the end point to get the matches
+	fmt.Println(summoner.Id)
 	if ranked {
 		endpoint += "&beginIndex=0&endIndex=10"
 	}
+	fmt.Println(fmt.Sprintf(endpoint, server, id, string(KEY)))
 	var Response, ResponseError = http.Get(fmt.Sprintf(endpoint, server, id, string(KEY)))
 	//use anon struct for the unmarshal function later on
 	var matches = struct{ Matches []Match }{}
@@ -462,11 +463,14 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 	//The function should return profile address and an error. We need it in case where we cannot get the profile for some reason
 	var Response, ResponseError = http.Get(fmt.Sprintf(ENDPOINT_SUMMONER_BY_NAME, server, name, string(KEY)))
 	var profile = SummonerProfile{}
+	var detailedChannel = make(chan *DetailedMatch, 10)
 	profile.RankedSummary = make(map[int]MatchSummary)
 	// a bunch of returns, but am not currently able to 'predefine' an error variable that should hold the eventual errors and then just use 1 return at the end.
 	if ResponseError != nil {
 		return &profile, ResponseError
 	} else if Response.StatusCode != http.StatusOK {
+		fmt.Println(Response.Header)
+		fmt.Println(Response.StatusCode)
 		return &profile, errors.New("The response code was not 200")
 	} else {
 		//
@@ -488,11 +492,16 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				profile.Ranked[i].Date = fmt.Sprintf("%02d-%02d-%d", day, month, year)
 				profile.Ranked[i].Mode = GameModes[profile.Ranked[i].Queue]
 				profile.Ranked[i].ChampionName = Champions[profile.Ranked[i].Champion]
-				var match, _ = profile.GetMatchById(profile.Ranked[i].GameId, profile.Ranked[i].PlatformId)
-				profile.RankedDetailed = append(profile.RankedDetailed, *match)
-				var matchSummary = profile.GetMatchSummary(match)
-				profile.RankedSummary[match.GameId] = *matchSummary
+				go profile.GetMatchById(profile.Ranked[i].GameId, profile.Ranked[i].PlatformId, detailedChannel)
 			}
+
+			for i := 0; i < 10; i++ {
+				var temp = <-detailedChannel
+				profile.RankedDetailed = append(profile.RankedDetailed, *temp)
+				var matchSummary = profile.GetMatchSummary(temp)
+				profile.RankedSummary[temp.GameId] = *matchSummary
+			}
+
 		}
 	}
 	defer Response.Body.Close()
@@ -501,27 +510,26 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 	return &profile, nil
 }
 
-func (summoner *SummonerProfile) GetMatchById(matchId int, server string) (*DetailedMatch, error) {
-	fmt.Println(fmt.Sprintf(ENDPOINT_MATCH_BY_GAME_ID, server, matchId, string(KEY)))
+func (summoner *SummonerProfile) GetMatchById(matchId int, server string, ch chan *DetailedMatch) {
 	var Response, err = http.Get(fmt.Sprintf(ENDPOINT_MATCH_BY_GAME_ID, server, matchId, string(KEY)))
 	defer Response.Body.Close()
 	var Details = DetailedMatch{}
 	if err != nil {
 		fmt.Println(err)
-		return &Details, err
+		ch <- &Details
 	} else {
 		var ByteResponse, ByteError = ioutil.ReadAll(Response.Body)
 		if ByteError != nil {
 			fmt.Println(124)
-			return &Details, ByteError
+			ch <- &Details
 		} else {
 			var UnmarshalError = json.Unmarshal(ByteResponse, &Details)
 			if UnmarshalError != nil {
 				fmt.Println(UnmarshalError)
-				return &Details, UnmarshalError
+				ch <- &Details
 			} else {
 				Details.Separator = 6
-				return &Details, nil
+				ch <- &Details
 			}
 		}
 	}
@@ -537,7 +545,6 @@ func (summoner *SummonerProfile) GetMatchSummary(match *DetailedMatch) *MatchSum
 	for i := 0; i < 10; i++ {
 		if match.Participants[i].ParticipantId == matchSummary.ParticipantID {
 			matchSummary.Spell1 = SummonerSpells[match.Participants[i].Spell1Id]
-			fmt.Println(matchSummary.Spell1)
 			matchSummary.Spell2 = SummonerSpells[match.Participants[i].Spell2Id]
 			matchSummary.Item0 = match.Participants[i].Stats.Item0
 			matchSummary.Item1 = match.Participants[i].Stats.Item1
