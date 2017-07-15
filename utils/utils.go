@@ -18,6 +18,22 @@ const ENDPOINT_MATCH_BY_GAME_ID = "https://%s.api.riotgames.com/lol/match/v3/mat
 
 var KEY, ok = ioutil.ReadFile("config.txt")
 
+var SummonerSpells = map[int]string{
+	6:  "SummonerHaste",
+	7:  "SummonerHeal",
+	13: "SummonerMana",
+	30: "SummonerPoroRecall",
+	31: "SummonerPoroThrow",
+	32: "SummonerSnowball",
+	1:  "SummonerBoost",
+	12: "SummonerTeleport",
+	11: "SummonerSmite",
+	21: "SummonerBarrier",
+	14: "SummonerDot",
+	3:  "SummonerExhaust",
+	4:  "SummonerFlash",
+}
+
 var GameModes = map[int]string{
 	0:   "Custom",
 	8:   "Normal 3v3",
@@ -53,7 +69,7 @@ var GameModes = map[int]string{
 	318: "All Random URF",
 	325: "All Random Summoner's Rift",
 	400: "Normal 5v5 Draft Pick",
-	420: "Ranked Solo",
+	420: "Solo Queue",
 	430: "Normal 5v5 Blind Pick",
 	440: "Ranked Flex",
 	600: "Blood Hunt Assassin",
@@ -380,8 +396,8 @@ type Mastery struct {
 
 type MatchSummary struct {
 	ParticipantID      int
-	Spell1Id           int
-	Spell2Id           int
+	Spell1             string
+	Spell2             string
 	Item0              int
 	Item1              int
 	Item2              int
@@ -520,8 +536,9 @@ func (summoner *SummonerProfile) GetMatchSummary(match *DetailedMatch) *MatchSum
 	}
 	for i := 0; i < 10; i++ {
 		if match.Participants[i].ParticipantId == matchSummary.ParticipantID {
-			matchSummary.Spell1Id = match.Participants[i].Spell1Id
-			matchSummary.Spell2Id = match.Participants[i].Spell2Id
+			matchSummary.Spell1 = SummonerSpells[match.Participants[i].Spell1Id]
+			fmt.Println(matchSummary.Spell1)
+			matchSummary.Spell2 = SummonerSpells[match.Participants[i].Spell2Id]
 			matchSummary.Item0 = match.Participants[i].Stats.Item0
 			matchSummary.Item1 = match.Participants[i].Stats.Item1
 			matchSummary.Item2 = match.Participants[i].Stats.Item2

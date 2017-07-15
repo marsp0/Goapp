@@ -45,15 +45,57 @@
 						{{range $index, $value := $self.Ranked}}
 							<tr class = "summary">
 								{{$result := index $self.RankedSummary $value.GameId}}
-								<td class = "vert-aligned col-xs-1 text-center"><i class="glyphicon glyphicon-{{$result.Result}} result-icon {{$result.Result}}-icon"></i></td>
-								<td class = "vert-aligned">
-									<div>
-										
-										<img src="http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{{$value.ChampionName}}.png" class="img-rounded img-responsive" alt = "Profile Icon" width="60"> 
+								<td class = "vert-aligned col-xs-1 text-center result-div"><i class="glyphicon glyphicon-{{$result.Result}} result-icon {{$result.Result}}-icon"></i></td>
+								<td class = "vert-aligned td-summary" >
+									<div class= "container-fluid summary-container">
+										<div class="row">
+											<div class="col-xs-2 date-div">
+												<p class ="vert-aligned"> {{$value.Mode}} </p>
+												<p> {{$value.Date}} </p>
+											</div>
+											<div class="col-xs-1 champion-icon" >
+												<img src="http://ddragon.leagueoflegends.com/cdn/7.13.1/img/champion/{{$value.ChampionName}}.png" class="img-rounded img-responsive" alt = "{{$value.ChampionName}}" > 
+											</div>
+											<div class="col-xs-1 summoner-spells">
+												<img src="http://ddragon.leagueoflegends.com/cdn/7.13.1/img/spell/{{$result.Spell1}}.png" class="img img-responsive" alt = "{{$result.Spell1}}" >
+												<img src="http://ddragon.leagueoflegends.com/cdn/7.13.1/img/spell/{{$result.Spell2}}.png" class="img img-responsive" alt = "{{$result.Spell2}}" > 		
+											</div>
+											<div class = "col-xs-4">
+												<div class="row">
+													<ul class="list-inline no-padding">
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item0}}.png" class = "img img-responsive" alt ="{{$result.Item0}}">
+														</li>
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item1}}.png" class = "img img-responsive" alt ="{{$result.Item1}}">
+														</li>
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item2}}.png" class = "img img-responsive" alt ="{{$result.Item2}}">
+														</li>
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item6}}.png" class = "img img-responsive" alt ="{{$result.Item6}}">
+														</li>
+													</ul>
+													<ul class="list-inline no-padding">
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item3}}.png" class = "img img-responsive" alt ="{{$result.Item3}}">
+														</li>
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item4}}.png" class = "img img-responsive" alt ="{{$result.Item4}}">
+														</li>
+														<li>
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item5}}.png" class = "img img-responsive" alt ="{{$result.Item5}}">
+														</li>
+													</ul>
+												</div>
+												<div class="row">
+												</div>
+											</div>
+										</div>
 									</div>
 								</td>
 								
-								<td class="text-right col-xs-1 vert-aligned"><a href="/"><button data-toggle = "collapse" data-target="#{{$index}}" class ="accordion-toggle btn btn-primary btn-md" style="margin:0">More Info</button> </a> </td>
+								<td class="text-center col-xs-1 vert-aligned"><a href="/"><button  class ="btn btn-primary btn-md" style="margin:0">More Info</button> </a> </td>
 							</tr>
 						{{end}}
 					</tbody>

@@ -41,6 +41,12 @@
 	vertical-align: middle;
 }
 
+.table tbody tr .result-div {
+	margin: 0px;
+	padding: 0px;
+	width: 77px;
+}
+
 tbody td .result-icon {
 	font-size: 50px;
 }
@@ -53,6 +59,40 @@ tbody td .download-icon {
 	color: #E9422E;
 }
 
+table tbody tr .td-summary .champion-icon {
+	padding: 5px 0 5px 0;
+}
+
+table tbody tr .td-summary .champion-icon img{
+	width:70px;
+}
+
 tbody .summary {
-	height: 80px;
+	height:80px;
+}
+
+table tbody tr .td-summary .summoner-spells { 
+	width: 60px;
+	padding: 5px 0 5px 0 ;
+}
+tbody .td-summary .summoner-spells img {
+	width: 35px
+}
+
+table tbody tr td div .no-padding li {
+	padding: 0
+}
+
+table tbody tr td div .no-padding li{
+	float: left;
+	width: 35px;
+}
+table tbody tr td div .no-padding{
+	margin: 5px 0 0 0;
+	height:35px
+}
+
+.table tbody tr td .date-div {
+	padding: 15px 0 0 0;
+	width: 90px;
 }
