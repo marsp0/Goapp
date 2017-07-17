@@ -5,11 +5,12 @@ import (
 	"html/template"
 	"net/http"
 	//"io/ioutil"
-	"./utils"
 	"log"
 	"os"
 	"regexp"
 	"strings"
+
+	"./utils"
 )
 
 var ERROR_501 = "<html><head><title>Error</title></head><body><h1> 500 - Internal Server Error </h1></body>"
@@ -64,7 +65,9 @@ func (app *App) Index(w http.ResponseWriter, r *http.Request) {
 //NOTE > need to refactor and improve it to serve any kind of static files.
 //NOTE > On golangs page it says that if this can take user input, then I should also make sure that the input is properly configured.
 func (app *App) Static(w http.ResponseWriter, r *http.Request) {
+
 	var path = strings.Trim(r.URL.Path, "/")
+	fmt.Println(path)
 	http.ServeFile(w, r, path)
 }
 

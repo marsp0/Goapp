@@ -16,7 +16,7 @@ const ENDPOINT_RANKED_BY_ID = "https://%s.api.riotgames.com/lol/match/v3/matchli
 const ENDPOINT_CHAMPIONS_BY_ID = "https://%s.api.riotgames.com/lol/static-data/v3/champions/%d"
 const ENDPOINT_FEATURED_GAMES = "https://%s.api.riotgames.com/lol/spectator/v3/featured-games"
 const ENDPOINT_MATCH_BY_GAME_ID = "https://%s.api.riotgames.com/lol/match/v3/matches/%d?api_key=%s"
-const ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID = "https://%s.api.riotgames.com/lol/league/v3/positions/by-summoner/%d"
+const ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID = "https://%s.api.riotgames.com/lol/league/v3/positions/by-summoner/%d?api_key=%s"
 
 var KEY, ok = ioutil.ReadFile("config.txt")
 
@@ -78,6 +78,7 @@ var GameModes = map[int]string{
 	610: "Dark Star"}
 
 var Champions = map[int]string{24: "Jax",
+
 	37:  "Sona",
 	18:  "Tristana",
 	110: "Varus",
@@ -612,7 +613,8 @@ func (summoner *SummonerProfile) GetMatchSummary(match *DetailedMatch) *MatchSum
 }
 
 func (summoner *SummonerProfile) GetLeaguePosition(server string) {
-	Response, err := http.Get(fmt.Sprintf(ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID, server, summoner.Id))
+	Response, err := http.Get(fmt.Sprintf(ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID, server, summoner.Id, KEY))
+	fmt.Printf(ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID, server, summoner.Id, KEY)
 	if err != nil {
 		log.Fatal("Was not able to get the league positions")
 	} else {
@@ -620,6 +622,7 @@ func (summoner *SummonerProfile) GetLeaguePosition(server string) {
 		if err != nil {
 			log.Fatal("Was not able to read the byte string for the league position")
 		} else {
+			fmt.Println(string(ByteResponse))
 			err := json.Unmarshal(ByteResponse, &summoner.LeaguePosition)
 			if err != nil {
 				log.Fatal("Was not able unmarshal the json struct for the league position")
