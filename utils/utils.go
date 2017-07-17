@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 )
@@ -15,6 +16,7 @@ const ENDPOINT_RANKED_BY_ID = "https://%s.api.riotgames.com/lol/match/v3/matchli
 const ENDPOINT_CHAMPIONS_BY_ID = "https://%s.api.riotgames.com/lol/static-data/v3/champions/%d"
 const ENDPOINT_FEATURED_GAMES = "https://%s.api.riotgames.com/lol/spectator/v3/featured-games"
 const ENDPOINT_MATCH_BY_GAME_ID = "https://%s.api.riotgames.com/lol/match/v3/matches/%d?api_key=%s"
+const ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID = "https://%s.api.riotgames.com/lol/league/v3/positions/by-summoner/%d"
 
 var KEY, ok = ioutil.ReadFile("config.txt")
 
@@ -426,6 +428,31 @@ type SummonerProfile struct {
 	Ranked         []Match
 	RankedDetailed []DetailedMatch
 	RankedSummary  map[int]MatchSummary
+	LeaguePosition []LeaguePosition
+}
+
+type LeaguePosition struct {
+	QueueType        string
+	Rank             string
+	HotStreak        bool
+	MiniSeries       MiniSeries
+	Wins             int
+	Veteran          bool
+	Losses           int
+	PlayerOrTeamId   string
+	LeagueName       string
+	PlayerOrTeamName string
+	Inactive         bool
+	FreshBlood       bool
+	Tier             string
+	LeaguePoints     int
+}
+
+type MiniSeries struct {
+	Wins     int
+	Losses   int
+	target   int
+	progress string
 }
 
 func (summoner *SummonerProfile) GetMatchesByAccountID(id int, server string, endpoint string, ranked bool) (*[]Match, error) {
@@ -460,6 +487,7 @@ func (summoner *SummonerProfile) GetMatchesByAccountID(id int, server string, en
 }
 
 func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
+
 	//The function should return profile address and an error. We need it in case where we cannot get the profile for some reason
 	var Response, ResponseError = http.Get(fmt.Sprintf(ENDPOINT_SUMMONER_BY_NAME, server, name, string(KEY)))
 	var profile = SummonerProfile{}
@@ -501,6 +529,7 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				var matchSummary = profile.GetMatchSummary(temp)
 				profile.RankedSummary[temp.GameId] = *matchSummary
 			}
+			profile.GetLeaguePosition(server)
 
 		}
 	}
@@ -579,5 +608,24 @@ func (summoner *SummonerProfile) GetMatchSummary(match *DetailedMatch) *MatchSum
 		}
 	}
 	return &matchSummary
+
+}
+
+func (summoner *SummonerProfile) GetLeaguePosition(server string) {
+	Response, err := http.Get(fmt.Sprintf(ENDPOINT_LEAGUE_POSITIONS_BY_SUMMONER_ID, server, summoner.Id))
+	if err != nil {
+		log.Fatal("Was not able to get the league positions")
+	} else {
+		ByteResponse, err := ioutil.ReadAll(Response.Body)
+		if err != nil {
+			log.Fatal("Was not able to read the byte string for the league position")
+		} else {
+			err := json.Unmarshal(ByteResponse, &summoner.LeaguePosition)
+			if err != nil {
+				log.Fatal("Was not able unmarshal the json struct for the league position")
+			}
+		}
+	}
+	defer Response.Body.Close()
 
 }
