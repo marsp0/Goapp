@@ -531,6 +531,15 @@ func GetSummonerByName(name string, server string) (*SummonerProfile, error) {
 				profile.RankedSummary[temp.GameId] = *matchSummary
 			}
 			profile.GetLeaguePosition(server)
+			for i := 0; i < len(profile.LeaguePosition); i++ {
+				if profile.LeaguePosition[i].QueueType == "RANKED_FLEX_TT" {
+					profile.LeaguePosition[i].QueueType = "TT Flex"
+				} else if profile.LeaguePosition[i].QueueType == "RANKED_SOLO_5x5" {
+					profile.LeaguePosition[i].QueueType = "Solo Q"
+				} else if profile.LeaguePosition[i].QueueType == "RANKED_FLEX_SR" {
+					profile.LeaguePosition[i].QueueType = "Flex Q"
+				}
+			}
 
 		}
 	}

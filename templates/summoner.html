@@ -30,13 +30,20 @@
 						<p>Level : {{.SummonerLevel}}</p>
 						<p>Last Seen : {{.LastSeen}}</p>
 					</div>
-					<div class = "col-sm-8 border">
+					<div class = "col-sm-8">
 						<div class="container-fluid">
-							<div class="row">
+							<div class="row form-inline">
 								{{range $index, $value := .LeaguePosition}}
-								<div class ="col-sm-4 bordered">
-									<img src = "/static/img/leagues/{{$value.Tier}}/{{$value.Tier}}{{$value.Rank}}.png">
+								<div class ="col-sm-4 well pull-right">
+									<div class="col-sm-6">
+										<img src = "/static/img/leagues/{{$value.Tier}}/{{$value.Tier}}{{$value.Rank}}.png" style="width:90px;">
+									</div>
+									<div class="col-sm-6">	
+										<b>{{$value.QueueType}}</b>
 										{{$value.Tier}} {{$value.Rank}}
+										Won: {{$value.Wins}}
+										Lost: {{$value.Losses}}
+									</div>
 								</div>
 								{{end}}
 							</div>
