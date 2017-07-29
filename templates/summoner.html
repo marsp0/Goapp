@@ -30,6 +30,25 @@
 						<p>Level : {{.SummonerLevel}}</p>
 						<p>Last Seen : {{.LastSeen}}</p>
 					</div>
+					<div class = "col-sm-8">
+						<div class="container-fluid">
+							<div class="row form-inline">
+								{{range $index, $value := .LeaguePosition}}
+								<div class ="col-sm-4 well pull-right">
+									<div class="col-sm-6">
+										<img src = "/static/img/leagues/{{$value.Tier}}/{{$value.Tier}}{{$value.Rank}}.png" style="width:90px;">
+									</div>
+									<div class="col-sm-6">	
+										<b>{{$value.QueueType}}</b>
+										{{$value.Tier}} {{$value.Rank}}
+										Won: {{$value.Wins}}
+										Lost: {{$value.Losses}}
+									</div>
+								</div>
+								{{end}}
+							</div>
+						</div>
+					</div>
 			</div>
 			<div class="row">
 				<ul class ="nav nav-tabs nav-justified pills">
@@ -64,27 +83,27 @@
 												<div class="row">
 													<ul class="list-inline no-padding">
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item0}}.png" class = "img img-responsive" alt ="{{$result.Item0}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item0}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item0}}">
 														</li>
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item1}}.png" class = "img img-responsive" alt ="{{$result.Item1}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item1}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item1}}">
 														</li>
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item2}}.png" class = "img img-responsive" alt ="{{$result.Item2}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item2}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item2}}">
 														</li>
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item6}}.png" class = "img img-responsive" alt ="{{$result.Item6}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item6}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item6}}">
 														</li>
 													</ul>
 													<ul class="list-inline no-padding">
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item3}}.png" class = "img img-responsive" alt ="{{$result.Item3}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item3}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item3}}">
 														</li>
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item4}}.png" class = "img img-responsive" alt ="{{$result.Item4}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item4}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item4}}">
 														</li>
 														<li>
-															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item5}}.png" class = "img img-responsive" alt ="{{$result.Item5}}">
+															<img src = "http://ddragon.leagueoflegends.com/cdn/7.13.1/img/item/{{$result.Item5}}.png" class = "img-rounded img-responsive" alt ="{{$result.Item5}}">
 														</li>
 													</ul>
 												</div>
